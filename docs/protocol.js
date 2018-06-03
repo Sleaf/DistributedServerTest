@@ -26,6 +26,13 @@ function protocol() {
         password: String
       };
       return Status;
+    /*scan*/
+    case GET`/scan`:
+      query = {
+        date:'YYYY-MM-DD'
+
+      };
+      return Status;
 
 
     default:
