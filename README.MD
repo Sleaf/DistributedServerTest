@@ -1,4 +1,4 @@
-# 《NTM去哪儿》分布式服务集群系统 *(课内实验)*
+# 《NTM去哪儿》分布式服务集群系统 *（课内实验）*
  >类去哪网（机票）的分布式架构网站
 
 ## Overview
@@ -19,6 +19,7 @@
 │   ├── order               # 订单服务器源文件
 │   └── payment             # 支付提供商服务器源文件
 │
+├── accounts.js             # 各种附件的密码文件（gitignore）
 ├── staticWeb               # 前端网页源文件
 ├── nginx.conf              # 请配合nginx使用
 ├── README.md
