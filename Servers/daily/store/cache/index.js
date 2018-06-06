@@ -1,7 +1,8 @@
 const Redis = require('ioredis');
+const accounts = require('../../../../accounts');
 const redis = new Redis({
-  port: 6379,          // Redis port
-  host: '127.0.0.1',   // Redis host
+  port: accounts.redis.port,          // Redis port
+  host: accounts.redis.host,   // Redis host
   family: 4,          // 4 (IPv4) or 6 (IPv6)
   ttl: 60 * 60,  //过期时间
   db: 0

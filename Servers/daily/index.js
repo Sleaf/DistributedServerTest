@@ -3,6 +3,7 @@ const session = require('koa-session');
 const RedisStore = require('koa2-session-redis');
 const bodyParser = require('koa-bodyparser');
 const router = require('./router');
+const accounts = require('../../accounts');
 const app = new Koa();
 
 const sessionConfig = {
@@ -16,7 +17,10 @@ const sessionConfig = {
   signed: true,//(boolean) signed or not (default true) */
   rolling: false,//(boolean) Force a session identifier cookie to be set on every response. The expiration is reset to the original maxAge, resetting the expiration countdown. (default is false) */
   renew: false,//(boolean) renew session when session is nearly expired, so we can always keep user logged in. (default is false)*/
-  store: new RedisStore(),
+  store: new RedisStore({
+    port: accounts.redis.port,          // Redis port
+    host: accounts.redis.host,   // Redis host
+  }),
 };
 
 app.keys = ['NTM'];

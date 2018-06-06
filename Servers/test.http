@@ -1,4 +1,4 @@
-POST http://localhost/api/user/login
+POST http://localhost/api/login
 Content-Type: application/json
 
 {
@@ -8,12 +8,23 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost/api/user/register
+POST http://localhost/api/register
 Content-Type: application/json
 
 {
   "username":"eeee",
   "password":"123"
+}
+
+###
+
+POST http://localhost/api/oder
+Content-Type: application/json
+
+{
+  "data":"2018-01-03",
+  "id":"263",
+  "username":"2313123"
 }
 
 ###

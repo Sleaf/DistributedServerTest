@@ -29,12 +29,19 @@ function protocol() {
     /*scan*/
     case GET`/scan`:
       query = {
-        date:'YYYY-MM-DD'
-
+        date: 'YYYY-MM-DD'
       };
       return Status;
 
-
+    /*order*/
+    case POST`/order`:
+      data = {
+        date: 'YYYY-MM-DD',
+        id: String,
+        username: String
+      };
+      return Status;
     default:
+
   }
 }

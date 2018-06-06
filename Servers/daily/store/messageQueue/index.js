@@ -1,20 +1,32 @@
 const kafka = require('kafka-node');
-const client = new kafka.Client('localhost:2181');
+const accounts = require('../../../../accounts');
+const client = new kafka.Client(accounts.kafka.host);
 
+/*
+* DOC
+* https://github.com/SOHU-Co/kafka-node
+* */
+const topic = 'Posts';
 //producer
 const producer = new kafka.Producer(client);
 producer.on('ready', function () {
-  console.log('Producer is ready');
+  // console.log('Producer is ready');
+  const topics = [topic];
+  producer.createTopics(topics, true, function (err, data) {
+    console.log(`topic [${topics}] created`);
+  });
 });
 producer.on('error', function (err) {
   console.log('Producer is in error state');
   console.log(err);
 });
 
-
 //consumer
 const consumerPayloads = [
-  {topic: 'Posts', offset: 0}
+  {
+    topic: topic,
+    offset: 0
+  }
 ];
 const consumerConfig = {
   groupId: 'kafka-node-group',//consumer group id, default `kafka-node-group`
@@ -32,18 +44,22 @@ const consumerConfig = {
   // If set to 'buffer', values will be returned as raw buffer objects.
   encoding: 'utf8'
 };
+
 const consumer = new kafka.Consumer(client, consumerPayloads, consumerConfig);
 consumer.on('message', function (message) {
-  console.log(message);
+  console.log('Client:', message);
 });
 consumer.on('error', function (err) {
-  console.log('Error:', err);
+  console.error('Error:', err.message);
 });
 consumer.on('offsetOutOfRange', function (err) {
   console.log('offsetOutOfRange:', err);
 });
 
+
 module.exports = {
+  client,
+  topic,
   producer,
   consumer
 };
