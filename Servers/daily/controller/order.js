@@ -8,12 +8,11 @@ async function launch(ctx) {
   //validate request
   if (!/^\d{4}-\d{2}-\d{2}$/.test(payload.date)) return ctx.throw(400);
   //find rest of seats in cache
-  let res = await redis.get(`flight_${payload.id}_rest`);
-  if (res && res > 0) {
+  let flight_info = await redis.hget(`flight_${payload.id}_info`);
+  if (flight_info && flight_info.restTickets > 0) {
     const sendMsg = JSON.stringify({
-      date:payload.date,
-      id:payload.id,
-      username:payload.username
+      id: payload.id,
+      username: payload.username
     });
     const sendPayload = {
       topic: 'Posts',
@@ -24,12 +23,14 @@ async function launch(ctx) {
       timestamp: Date.now() // <-- defaults to Date.now() (only available with kafka v0.10 and KafkaClient only)
     };
     kafka.producer.send(sendPayload, (err, data) => {
+      //reduce rest of tickets
+      redis.hincrby(`flight_${payload.id}_rest restTickets -1`);
       console.log(data);
     })
   } else {
     ctx.body = {
       code: 'FAIL',
-      msg: res === 0 ? 'tickets sold out' : 'flight not exist'
+      msg: flight_info === 0 ? 'tickets sold out' : 'flight not exist'
     }
   }
 }

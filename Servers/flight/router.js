@@ -2,13 +2,11 @@ const Router = require('koa-router');
 const router = new Router().prefix('/api');
 
 const Controller_user = require('./controller/user');
-const Controller_scan = require('./controller/scan');
-const Controller_order = require('./controller/order');
+const Controller_getInfo = require('./controller/getInfo');
 
 router.post('/login', Controller_user.login);
 router.post('/register', Controller_user.register);
-router.get('/scan', Controller_scan.getFlightsFsByDate);
-router.post('/order', Controller_order.launch);
+router.get('/getInfo', Controller_getInfo.getFlightsInfo);
 
 
 router.get('*', (ctx)=>{

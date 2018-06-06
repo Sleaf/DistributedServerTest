@@ -36,7 +36,6 @@ function protocol() {
     /*order*/
     case POST`/order`:
       data = {
-        date: 'YYYY-MM-DD',
         id: String,
         username: String
       };

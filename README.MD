@@ -20,8 +20,8 @@
 │   ├── daily               # 日常服务器源文件
 │   ├── flight              # 航班供应商服务器源文件
 │   ├── order               # 订单服务器源文件
-│   ├── update              # 更新服务器源文件
-│   └── payment             # 支付提供商服务器源文件
+│   ├── payment             # 支付提供商服务器源文件
+│   └── update              # 更新服务器源文件
 │
 ├── accounts.js             # 各种附件的密码文件（gitignore）
 ├── staticWeb               # 前端网页源文件
