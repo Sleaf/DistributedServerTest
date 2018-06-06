@@ -10,7 +10,7 @@ async function getTicketsByDate(ctx) {
   let res = await redis.get(`flight_${reqDate}`);
   if (res) return ctx.body = res;//found
   //find in database
-  const sqlStr = 'SELECT * FROM flights NATURE JOIN flight_brand WHERE tripDate = ?';
+  const sqlStr = 'SELECT * FROM flights INNER JOIN flight_brand WHERE tripDate = ?';
   const sqlParams = [reqDate];
   databasePool.query(sqlStr, sqlParams, (error, results) => {
     if (error) return console.error(error);

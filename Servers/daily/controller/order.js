@@ -8,5 +8,4 @@ async function launch(ctx) {
 
 module.exports = {
   launch,
-
 };
