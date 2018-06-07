@@ -68,16 +68,19 @@ function insertAccount(username, password) {
 async function login(ctx) {
   const username = ctx.request.body.username;
   const password = ctx.request.body.password;
+      console.log(ctx.cookies.get('sessionID'));
   try {
     const res = await findAccount(username, password);
     let ret = {
-      code: 'FAIL',
+      code: 404,
+      status: 'FAIL',
       msg: 'account not exist or wrong password'
     };
     if (res.length > 0) {
       ret = {
-        code: 'OK',
-        msg: 'login successfully'
+        code: 200,
+        status: 'OK',
+        data: ctx.cookies.get('sessionID')
       }
     }
     // return Promise.resolve(ret)
@@ -88,7 +91,8 @@ async function login(ctx) {
     //   msg: e.msg
     // })
     ctx.body = {
-      code: 'FAIL',
+      code: 508,
+      status: 'FAIL',
       msg: e.msg
     };
   }
@@ -103,14 +107,16 @@ async function register(ctx) {
   try {
     const queryRes = await findAccount(username);
     let ret = {
-      code: 'FAIL',
+      code: 404,
+      status: 'FAIL',
       msg: 'account is exist'
     };
     if (queryRes.length < 1) {
       await insertAccount(username, password);
       ret = {
-        code: 'OK',
-        msg: 'register successfully'
+        code: 200,
+        status: 'OK',
+        data: null
       }
     }
     // return Promise.resolve(ret)
@@ -121,7 +127,8 @@ async function register(ctx) {
     //   msg: e.msg
     // })
     ctx.body = {
-      code: 'FAIL',
+      code: 508,
+      status: 'FAIL',
       msg: e.msg
     };
   }

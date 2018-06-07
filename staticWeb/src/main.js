@@ -16,7 +16,7 @@ const router = new VueRouter(RouterConfig);
 const util = {
   env: process.env.NODE_ENV,
   protocol: process.env.NODE_ENV === 'development' ? 'http:' : window.location.protocol,
-  baseURL: 'localhost',
+  baseURL: process.env.NODE_ENV === 'development' ? 'localhost' : window.location.host,
   // process.env.NODE_ENV === 'development' ? '47.100.117.174:8990' :
   // process.env.NODE_ENV === 'production' ? `${window.location.host}` : '127.0.0.1:8888',
   localStorage: {
@@ -104,7 +104,7 @@ const util = {
 util.ajax = axios.create({
   /*开发环境如果要使用在线接口 请使用8999端口
   * 生产环境请将API请求发到静态文件部署端口会使用nginx进行URL重写*/
-  baseURL: `${util.protocol}//${util.baseURL}/api`,
+  baseURL: `${util.protocol}//${util.baseURL}`,
   headers: {
     'content-type': 'application/json;charset=UTF-8'
   },
@@ -124,7 +124,7 @@ util.ajax.interceptors.request.use(function (config) {
 
 // 添加响应拦截器
 util.ajax.interceptors.response.use((response) => {
-    if (response.data.code !== '0') {
+    if (response.data.code !== 200) {
       return Promise.reject({
         code: response.data.code,
         msg: response.data.msg

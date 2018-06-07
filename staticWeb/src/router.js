@@ -1,19 +1,31 @@
 const RouterConfig = {
-  mode: 'history',
+  // mode: 'history',
   routes: [
     {
-      path: '/',
       name: 'index',
-      component: resolve => require(['./views/index'], resolve)
+      path: '/',
+      component: resolve => require(['./views/index/layout'], resolve),
+      children: [
+        {
+          name: 'flights',
+          path: 'flights',
+          component: resolve => require(['./views/index/flights'], resolve),
+        },
+        {
+          name: 'orders',
+          path: 'orders',
+          component: resolve => require(['./views/index/orders'], resolve),
+        }
+      ]
     },
     {
+      name: 'login',
       path: '/login',
-      name: 'index',
       component: resolve => require(['./views/entry/login'], resolve)
     },
     {
+      name: 'register',
       path: '/register',
-      name: 'index',
       component: resolve => require(['./views/entry/register'], resolve)
     },
     {

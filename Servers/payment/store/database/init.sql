@@ -16,13 +16,7 @@ CREATE TABLE IF NOT EXISTS accounts (
 );
 
 
-CREATE TABLE IF NOT EXISTS flights (
-  flight_id int auto_increment primary key,
-  tripDate  DATE        not null,
-  tripTime  time       not null,
-  model     varchar(32) not null,
-  departure varchar(32) not null,
-  terminal  varchar(32) not null,
-  price int not null,
-  restTickets int
+CREATE TABLE IF NOT EXISTS orders (
+  orders_id int auto_increment primary key,
+
 );

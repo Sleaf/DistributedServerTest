@@ -17,8 +17,8 @@ CREATE TABLE IF NOT EXISTS accounts (
 
 CREATE TABLE IF NOT EXISTS flight_brand (
   brand_id   int auto_increment primary key,
-  brand_name varchar(32) not null
-
+  brand_name varchar(32) not null,
+  brand_url VARCHAR (1024) not null
 );
 
 CREATE TABLE IF NOT EXISTS flights (
@@ -27,12 +27,14 @@ CREATE TABLE IF NOT EXISTS flights (
   tripTime  time       not null,
   model     varchar(32) not null,
   brand_id  int         not null,
-  terminal  varchar(32) not null,
   departure varchar(32) not null,
-   rest int
+  terminal  varchar(32) not null,
+  price int not null,
+  restTickets int
   FOREIGN KEY (brand_id) REFERENCES flight_brand(brand_id)
 );
 
 CREATE TABLE IF NOT EXISTS orders (
   order_id int auto_increment primary key
+
 );

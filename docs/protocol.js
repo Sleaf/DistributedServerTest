@@ -1,12 +1,25 @@
 const baseURL = '/api';
 const GET = 'HTTP GET method';
 const POST = 'HTTP POST method';
+const Int = {
+  404: 'not exist',
+  408: 'overload',
+  508: 'databse error'
+};
 
 function protocol() {
   const path = '';
   const Status = {
-    code: String,
-    msg: String
+    'OK': {
+      code: 200,
+      status: 'OK',
+      data: Object
+    },
+    'FAIL': {
+      code: Int,
+      status: 'FAIL',
+      msg: String
+    },
   };
   let query = 'arguments after path';
   let data = 'payload in request';

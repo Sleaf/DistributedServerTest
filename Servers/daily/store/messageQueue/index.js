@@ -6,7 +6,7 @@ const client = new kafka.Client(accounts.kafka.host);
 * DOC
 * https://github.com/SOHU-Co/kafka-node
 * */
-const topic = 'Posts';
+const topic = 'Orders';
 //producer
 const producer = new kafka.Producer(client);
 producer.on('ready', function () {

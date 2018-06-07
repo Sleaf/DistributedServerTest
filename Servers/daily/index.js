@@ -1,10 +1,12 @@
 const Koa = require('koa');
 const session = require('koa-session');
+const cors = require('koa2-cors');
 const RedisStore = require('koa2-session-redis');
 const bodyParser = require('koa-bodyparser');
 const router = require('./router');
 const accounts = require('../../accounts');
 const app = new Koa();
+const $ = require('./util');
 
 const sessionConfig = {
   key: 'sessionID', /** (string) cookie key (default is koa:sess) */
@@ -24,15 +26,21 @@ const sessionConfig = {
 };
 
 app.keys = ['NTM'];
-app.use(session(sessionConfig, app));
-app.use(bodyParser());
-
 app
+  .use(session(sessionConfig, app))
   .use(async (ctx, next) => {
     let n = ctx.session.views || 0;
     ctx.session.views = ++n;
     await next()
   })
+  .use(bodyParser())
+  .use(cors({
+    exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
+    maxAge: 5,
+    credentials: true,
+    allowMethods: ['GET', 'POST', 'DELETE'],
+    allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
+  }))
   .use(router.routes())
   .use(router.allowedMethods());
 
