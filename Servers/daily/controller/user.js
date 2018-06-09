@@ -68,7 +68,6 @@ function insertAccount(username, password) {
 async function login(ctx) {
   const username = ctx.request.body.username;
   const password = ctx.request.body.password;
-      console.log(ctx.cookies.get('sessionID'));
   try {
     const res = await findAccount(username, password);
     let ret = {
@@ -80,7 +79,10 @@ async function login(ctx) {
       ret = {
         code: 200,
         status: 'OK',
-        data: ctx.cookies.get('sessionID')
+        data: {
+          user_id: res[0].user_id,
+          sessionID: ctx.cookies.get('sessionID')
+        }
       }
     }
     // return Promise.resolve(ret)

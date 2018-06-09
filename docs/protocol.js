@@ -49,8 +49,8 @@ function protocol() {
     /*order*/
     case POST`/order`:
       data = {
-        id: String,
-        username: String
+        flight_id: String,
+        user_id: String
       };
       return Status;
     default:

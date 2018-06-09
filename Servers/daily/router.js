@@ -8,7 +8,8 @@ const Controller_order = require('./controller/order');
 router.post('/login', Controller_user.login);
 router.post('/register', Controller_user.register);
 router.get('/scan', Controller_scan.getFlightsFsByDate);
-router.post('/order', Controller_order.launch);
+router.get('/order', Controller_order.checkOrders);
+router.post('/order', Controller_order.takeOrders);
 
 
 router.get('*', (ctx)=>{
