@@ -25,15 +25,16 @@ const sessionConfig = {
 };
 
 app.keys = ['NTM'];
-app.use(session(sessionConfig, app));
-app.use(bodyParser());
-
 app
-  .use(async (ctx, next) => {
-    let n = ctx.session.views || 0;
-    ctx.session.views = ++n;
-    await next()
-  })
+  .use(session(sessionConfig, app))
+  .use(bodyParser())
+  .use(cors({
+    exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
+    maxAge: 5,
+    credentials: true,
+    allowMethods: ['GET', 'POST', 'DELETE'],
+    allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
+  }))
   .use(router.routes())
   .use(router.allowedMethods());
 

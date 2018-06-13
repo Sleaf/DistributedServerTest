@@ -12,7 +12,7 @@
           <el-submenu index="school">
             <template slot="title">
               <i class="el-icon-location"></i>
-              <span>学校管理</span>
+              <span>菜单</span>
             </template>
             <router-link to="flights">
               <el-menu-item index="flights">
@@ -22,6 +22,11 @@
             <router-link to="orders">
               <el-menu-item index="orders">
                 我的订单
+              </el-menu-item>
+            </router-link>
+            <router-link to="BankOrders">
+              <el-menu-item index="BankOrders">
+                我的银行账单
               </el-menu-item>
             </router-link>
           </el-submenu>

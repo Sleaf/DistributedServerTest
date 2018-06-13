@@ -15,6 +15,11 @@ const RouterConfig = {
           name: 'orders',
           path: 'orders',
           component: resolve => require(['./views/index/orders'], resolve),
+        },
+        {
+          name: 'BankOrders',
+          path: 'BankOrders',
+          component: resolve => require(['./views/index/BankOrders'], resolve),
         }
       ]
     },

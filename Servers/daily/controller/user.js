@@ -83,7 +83,8 @@ async function login(ctx) {
           user_id: res[0].user_id,
           sessionID: ctx.cookies.get('sessionID')
         }
-      }
+      };
+      ctx.session.views=res[0];
     }
     // return Promise.resolve(ret)
     ctx.body = ret;
