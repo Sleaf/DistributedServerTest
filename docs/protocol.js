@@ -47,12 +47,28 @@ function protocol() {
       return Status;
 
     /*order*/
+    case GET`/order`:
+      data = {
+        date:Date,
+      };
+      return Status;
     case POST`/order`:
       data = {
         flight_id: String,
-        user_id: String
+        user_id: String,
+        date: 'YYYY-MM-DD',
+        price: Number
       };
-      return Status;
+      return {
+        order_id: String
+      };
+    case POST`/payOrder`:
+      data = {
+        order_id: String,
+        bank_brand_id:String,
+        bank_token:String
+      };
+      return Number;
     default:
 
   }

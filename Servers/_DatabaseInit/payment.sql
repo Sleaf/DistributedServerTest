@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS accounts (
 
 
 CREATE TABLE IF NOT EXISTS orders (
-  orders_id    INT AUTO_INCREMENT PRIMARY KEY,
+  order_id    INT AUTO_INCREMENT PRIMARY KEY,
   user_id     INT,
   price        INT      NOT NULL,
   created_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
