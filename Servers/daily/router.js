@@ -8,13 +8,13 @@ const Controller_order = require('./controller/order');
 router
   .post('/login', Controller_user.login)
   .post('/register', Controller_user.register)
+  .get('/scan', Controller_scan.getFlightsFsByDate)
   .all('*', async (ctx, next) => {
     if (ctx.session.views == null) ctx.throw(403);
     else {
       await next();
     }
   })
-  .get('/scan', Controller_scan.getFlightsFsByDate)
   .get('/order', Controller_order.checkOrders)
   .post('/order', Controller_order.takeOrders)
   .all('*', (ctx) => {

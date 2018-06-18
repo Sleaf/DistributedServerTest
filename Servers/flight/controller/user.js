@@ -81,7 +81,7 @@ async function login(ctx) {
         status: 'OK',
         data: {
           user_id: res[0].user_id,
-          sessionID: ctx.cookies.get('sessionID')
+          sessionID: ctx.cookies.get('sessionID-flight')
         }
       };
       ctx.session.views=res[0];

@@ -22,5 +22,4 @@ redis.getObj = function (tag) {
   })
 };
 
-
 module.exports = redis;

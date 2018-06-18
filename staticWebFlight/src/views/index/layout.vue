@@ -2,7 +2,7 @@
   <el-container>
     <!--title-->
     <el-header height="4em">
-      <h1 class="title untouchable">NTM去哪儿</h1>
+      <h1 class="title untouchable">NTM航空后台</h1>
     </el-header>
     <el-container>
       <!--nav-->
@@ -17,16 +17,6 @@
             <router-link to="flights">
               <el-menu-item index="flights">
                 所有航班
-              </el-menu-item>
-            </router-link>
-            <router-link to="orders">
-              <el-menu-item index="orders">
-                我的订单
-              </el-menu-item>
-            </router-link>
-            <router-link to="BankOrders">
-              <el-menu-item index="BankOrders">
-                我的银行账单
               </el-menu-item>
             </router-link>
           </el-submenu>

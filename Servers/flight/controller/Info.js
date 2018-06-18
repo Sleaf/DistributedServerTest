@@ -31,9 +31,8 @@ async function getFlightsInfo(ctx) {
 
 async function addInfo(ctx) {
   const payload = ctx.request.body;
-  const sqlStr = 'INSERT INTO flights VALUES(?,?,?,?,?,?,?,?)';
+  const sqlStr = 'INSERT INTO flights VALUES(?,?,?,?,?,?,?)';
   const sqlParams = [
-    payload.flight_id || ctx.throw(400),
     payload.tripDate || ctx.throw(400),
     payload.tripTime || ctx.throw(400),
     payload.model || ctx.throw(400),

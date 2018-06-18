@@ -32,7 +32,10 @@ async function getFlightsFsByDate(ctx) {
         }
         //write cache
         redis.sadd(`flights_${reqDate}`, results.flight_id);
-        redis.hset(`flights_${results.flight_id}_info`, results);
+        redis.expire(`flights_${results.flight_id}_info`, 60);
+        for (const [label, value] of results.entries()) {
+          redis.hset(`flights_${results.flight_id}_info`, label, value);
+        }
         //send back
         ctx.body = {
           code: 200,
