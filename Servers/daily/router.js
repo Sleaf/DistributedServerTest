@@ -17,6 +17,7 @@ router
   })
   .get('/order', Controller_order.checkOrders)
   .post('/order', Controller_order.takeOrders)
+  .post('/payOrder', Controller_order.payOrder)
   .all('*', (ctx) => {
     ctx.body = `您的网址路径为:${ctx.request.url}，你的ip：${ctx.request.ip}`
   });

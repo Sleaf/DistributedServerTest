@@ -11,7 +11,7 @@ flight_id
 tripDate
 tripTime
 model
-brand_id
+flight_brand_id
 departure
 terminal
 restTickets

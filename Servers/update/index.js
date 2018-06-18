@@ -33,7 +33,7 @@ function updateDatabase(info, flightsData) {
     flightsData.tripDate || throwAError(),
     flightsData.tripTime || throwAError(),
     flightsData.model || throwAError(),
-    info.brand_id || throwAError(),//addition
+    info.flight_brand_id || throwAError(),//addition
     flightsData.departure || throwAError(),
     flightsData.terminal || throwAError(),
     flightsData.price || throwAError(),
