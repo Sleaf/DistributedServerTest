@@ -85,7 +85,8 @@
           date     : this.pickedDate.format('YYYY-MM-DD'),
           price    : row.price,
         })).then((res) => {
-          //todo 处理订单
+          this.$message.success('订票成功！');
+          this.$router.push('/orders');
         }, (err) => {
           this.$message.error('获取失败：' + err.msg);
         }).finally(e => {

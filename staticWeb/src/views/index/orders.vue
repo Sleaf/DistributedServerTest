@@ -14,7 +14,10 @@
       <el-table-column prop="status" label="订单状态"></el-table-column>
       <el-table-column>
         <template slot-scope="scope">
-          <el-button size="mini" type="primary" @click="payOrder(scope.$index, scope.row)">立即支付</el-button>
+          <el-button size="mini" type="primary" @click="payOrder(scope.$index, scope.row)"
+                     v-if="scope.row.status==='RESERVED'">立即支付
+          </el-button>
+          <el-tag v-else>已完成</el-tag>
         </template>
       </el-table-column>
     </el-table>
@@ -23,6 +26,8 @@
 </template>
 
 <script>
+  import Modal_payRequest from './Modal_payRequest'
+
   export default {
     name   : "orders",
     data() {
@@ -32,20 +37,28 @@
     },
     methods: {
       payOrder(index, row) {
-        const loading = this.$loading({
-          lock      : true,
-          text      : '支付中...',
-          spinner   : 'el-icon-loading',
-          background: 'rgba(0, 0, 0, 0.7)'
+        const h = this.$createElement;
+        this.$msgbox({
+          title             : '请支付',
+          message           : h(Modal_payRequest, {
+            props: {
+              banks   : [
+                {
+                  name: 'NTM银行',
+                  url : 'http://localhost:3002/order'
+                }
+              ],
+              userInfo: row,
+              amount  : row.price
+            },
+          }),
+          customClass       : 'bankBox',
+          closeOnClickModal : false,
+          closeOnPressEscape: false,
+          showConfirmButton : false,
+          showCancelButton  : false
+        }).catch(e => {
         });
-        this.$.ajax.post(`http://localhost:3002/payOrder`,JSON.stringify(row)).then((res) => {
-          console.log(res);
-          //todo 弹出银行付款界面
-        }, (err) => {
-          this.$message.error('支付失败：' + err.msg);
-        }).finally(e => {
-          loading.close();
-        })
       }
     },
     created() {
