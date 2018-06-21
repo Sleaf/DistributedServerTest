@@ -11,13 +11,15 @@
     <!--航班表-->
     <el-table :data="flights" border stripe class="flightTable">
       <el-table-column prop="flight_id" label="航班ID"></el-table-column>
-      <el-table-column prop="tripTime" label="出发时间"></el-table-column>
-      <el-table-column prop="brand" label="品牌"></el-table-column>
+      <el-table-column prop="tripDate" label="出发时间"></el-table-column>
+      <el-table-column prop="flight_brand_name" label="航空公司"></el-table-column>
+      <el-table-column prop="model" label="机型"></el-table-column>
       <el-table-column prop="departure" label="始发站"></el-table-column>
       <el-table-column prop="terminal" label="终点站"></el-table-column>
+      <el-table-column prop="price" label="价格"></el-table-column>
       <el-table-column>
         <template slot-scope="scope">
-          <el-button size="mini" @click="bookTicket(scope.$index, scope.row)">立即订票</el-button>
+          <el-button size="mini" type="primary" @click="bookTicket(scope.$index, scope.row)">立即订票</el-button>
           <span class="center">当前剩余 {{scope.row.restTickets}} 张</span>
         </template>
       </el-table-column>
@@ -57,9 +59,8 @@
           spinner   : 'el-icon-loading',
           background: 'rgba(0, 0, 0, 0.7)'
         });
-        this.$.ajax.get(`/api/scan?date=${this.pickedDate.format('YYYY-MM-DD')}`).then((res) => {
-          console.log(res);
-          //todo 更新列表
+        this.$.ajax.get(`http://localhost:3000/scan?date=${this.pickedDate.format('YYYY-MM-DD')}`).then((res) => {
+          this.flights = res;
         }, (err) => {
           this.$message.error('获取失败：' + err.msg);
         }).finally(e => {
@@ -78,13 +79,13 @@
           spinner   : 'el-icon-loading',
           background: 'rgba(0, 0, 0, 0.7)'
         });
-        this.$.ajax.post(`/api/order`, JSON.stringify({
+        this.$.ajax.post(`http://localhost:3000/order`, JSON.stringify({
           flight_id: row.flight_id,
           user_id  : sessionStorage.user_id,
           date     : this.pickedDate.format('YYYY-MM-DD'),
           price    : row.price,
         })).then((res) => {
-          this.flights = res;
+          //todo 处理订单
         }, (err) => {
           this.$message.error('获取失败：' + err.msg);
         }).finally(e => {

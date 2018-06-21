@@ -76,3 +76,5 @@ function bank_info(bank_id) {
     )
   })
 }
+
+console.log('订单服务器已启动，等待新的订单...：');

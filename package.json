@@ -10,6 +10,7 @@
     "dev-web-f": "webpack-dev-server --inline --progress --config staticWebFlight/build/webpack.dev.conf.js",
     "build-web": "node staticWeb/build/build.js",
     "dev-server-daily": "nodemon Servers/daily/index.js",
+    "dev-server-update": "nodemon Servers/update/index.js",
     "dev-server-order": "nodemon Servers/order/index.js",
     "dev-server-flight": "nodemon Servers/flight/index.js",
     "dev-server-payment": "nodemon Servers/payment/index.js"

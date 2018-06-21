@@ -9,7 +9,7 @@ const RouterConfig = {
         {
           name: 'flights',
           path: 'flights',
-          component: resolve => requireq(['./views/index/flights'], resolve),
+          component: resolve => require(['./views/index/flights'], resolve),
         },
         {
           name: 'orders',

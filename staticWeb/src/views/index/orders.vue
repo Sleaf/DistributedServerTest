@@ -1,20 +1,20 @@
 <template>
   <div class="container">
-    <el-table :data="orderss" border stripe class="orderTable">
+    <el-table :data="orders" border stripe class="orderTable">
       <el-table-column prop="order_id" label="订单id"></el-table-column>
       <el-table-column prop="created_time" label="创建时间"></el-table-column>
       <el-table-column prop="tripInfo" label="航班信息">
         <template slot-scope="scope">
-          <p>航班编号：</p>
-          <p>出发时间：</p>
-          <p>起始站～终点站</p>
-          <p>价格：</p>
+          <p>航班编号：{{scope.row.flight_id}}</p>
+          <p>出发时间：{{new Date(scope.row.tripDate).format('YYYY-MM-DD hh:mm')}}</p>
+          <p>{{scope.row.departure}} ～ {{scope.row.terminal}}</p>
+          <p>价格：{{scope.row.price}}</p>
         </template>
       </el-table-column>
       <el-table-column prop="status" label="订单状态"></el-table-column>
       <el-table-column>
         <template slot-scope="scope">
-          <el-button size="mini" @click="payOrder(scope.$index, scope.row)">立即支付</el-button>
+          <el-button size="mini" type="primary" @click="payOrder(scope.$index, scope.row)">立即支付</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -38,7 +38,7 @@
           spinner   : 'el-icon-loading',
           background: 'rgba(0, 0, 0, 0.7)'
         });
-        this.$.ajax.post(`/api/payOrder`,JSON.stringify(row)).then((res) => {
+        this.$.ajax.post(`http://localhost:3002/payOrder`,JSON.stringify(row)).then((res) => {
           console.log(res);
           //todo 弹出银行付款界面
         }, (err) => {
@@ -55,7 +55,7 @@
         spinner   : 'el-icon-loading',
         background: 'rgba(0, 0, 0, 0.7)'
       });
-      this.$.ajax.get(`/api/order`).then((res) => {
+      this.$.ajax.get(`http://localhost:3000/order`).then((res) => {
         this.orders = res;
       }, (err) => {
         this.$message.error('获取失败：' + err.msg);

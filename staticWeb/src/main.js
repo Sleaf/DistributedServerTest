@@ -104,7 +104,7 @@ const util = {
 util.ajax = axios.create({
   /*开发环境如果要使用在线接口 请使用8999端口
   * 生产环境请将API请求发到静态文件部署端口会使用nginx进行URL重写*/
-  baseURL: `${util.protocol}//${util.baseURL}`,
+  // baseURL: `${util.protocol}//${util.baseURL}`,
   headers: {
     'content-type': 'application/json;charset=UTF-8'
   },

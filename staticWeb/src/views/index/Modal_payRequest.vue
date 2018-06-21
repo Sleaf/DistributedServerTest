@@ -15,14 +15,15 @@
       <el-form-item label="密码">
         <el-input v-model="bankAccount.password"></el-input>
       </el-form-item>
+      <el-button class="newInput" type="primary" @click="getBankToken">立即支付</el-button>
     </el-form>
   </div>
 </template>
 
 <script>
   export default {
-    name : "Modal_payRequest",
-    props: {
+    name   : "Modal_payRequest",
+    props  : {
       banks : {
         type   : Array,
         default: () => [],
@@ -39,6 +40,11 @@
           password: ''
         },
       };
+    },
+    methods: {
+      getBankToken() {
+
+      }
     },
   }
 </script>

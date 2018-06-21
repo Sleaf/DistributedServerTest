@@ -1,6 +1,6 @@
 <template>
   <div class="center">
-    <h1>也没做</h1>
+    <h1>暂无内容</h1>
   </div>
 </template>
 

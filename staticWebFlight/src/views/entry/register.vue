@@ -3,7 +3,7 @@
     <el-card class="box-card">
       <el-form class="registerFrom" :model="registerFrom" status-icon :rules="registerFromRule" ref="registerFrom">
         <div class="center">
-          <h2>注册NTM航空</h2>
+          <h2>注册NTM波音</h2>
         </div>
         <el-form-item label="用户名" prop="username">
           <el-input type="text" v-model="registerFrom.username" placeholder="用户名..."></el-input>
@@ -85,7 +85,7 @@
               spinner: 'el-icon-loading',
               background: 'rgba(0, 0, 0, 0.7)'
             });
-            this.$.ajax.post('/api/register', {
+            this.$.ajax.post('http://localhost:3001/register', {
               username: this.registerFrom.username,
               password: this.registerFrom.password
             }).then((res) => {

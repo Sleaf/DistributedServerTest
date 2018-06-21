@@ -31,7 +31,7 @@
 │
 ├── accounts.js             # 各种附件的密码文件（gitignore）
 ├── staticWeb               # 前端网页源文件
-├── nginx.conf              # 请配合nginx使用
+├── ~~nginx.conf~~              # 请配合nginx使用
 ├── README.md
 └── *                       # 其他文件
 ```

@@ -10,13 +10,20 @@ async function getFlightsFsByDate(ctx) {
   let allFlights = await redis.smembers(`flights_${reqDate}`);
   const res = [];
   for (const flight_id of allFlights || []) {
-    res.push(await redis.hgetall(`flight_${flight_id}_info`));
+    const cache = await redis.hgetall(`flights_${flight_id}_info`);
+    if (cache.flight_id > 0) {
+      res.push(cache);
+      console.log('读取缓存：', cache);
+    }
   }
-  if (res.length > 0) return ctx.body = {
-    code: 200,
-    status: 'OK',
-    data: JSON.stringify(res)
-  };//found
+  if (res.length > 0) {
+    //found
+    return ctx.body = {
+      code  : 200,
+      status: 'OK',
+      data  : res
+    };
+  }
   //find in database
   const sqlStr = 'SELECT * FROM flights NATURE JOIN flight_brand WHERE tripDate = ?';
   const sqlParams = [reqDate];
@@ -24,23 +31,27 @@ async function getFlightsFsByDate(ctx) {
     databasePool.query(sqlStr, sqlParams, (error, results) => {
         if (error) {
           ctx.body = {
-            code: 508,
+            code  : 508,
             status: 'FAIL',
-            msg: error.message
+            msg   : error.message
           };
           return resolve();
         }
-        //write cache
-        redis.sadd(`flights_${reqDate}`, results.flight_id);
-        redis.expire(`flights_${results.flight_id}_info`, 60);
-        for (const [label, value] of results.entries()) {
-          redis.hset(`flights_${results.flight_id}_info`, label, value);
+        for (const flight of results) {
+          //write cache
+          redis.sadd(`flights_${reqDate}`, flight.flight_id);
+          for (const [label, value] of Object.entries(flight)) {
+            redis.hset(`flights_${flight.flight_id}_info`, label, value);
+          }
+          console.log('写入缓存：', `flights_${flight.flight_id}_info`, flight);
+          // redis.expire(`flights_${flight.flight_id}_info`, 60);
         }
+
         //send back
         ctx.body = {
-          code: 200,
+          code  : 200,
           status: 'OK',
-          data: JSON.stringify(results)
+          data  : results
         };
         return resolve();
       }

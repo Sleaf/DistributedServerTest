@@ -2,7 +2,7 @@
   <el-container>
     <!--title-->
     <el-header height="4em">
-      <h1 class="title untouchable">NTM航空后台</h1>
+      <h1 class="title untouchable">NTM波音-后台</h1>
     </el-header>
     <el-container>
       <!--nav-->
@@ -21,16 +21,10 @@
             </router-link>
           </el-submenu>
         </el-menu>
-        <el-button class="btn_logout" type="danger" @click="logout" v-if="logged">
+        <el-button class="btn_logout" type="danger" @click="logout">
           <i class="el-icon-back"></i>
           &#12288;退出登录
         </el-button>
-        <router-link to="/login" v-else>
-          <el-button class="btn_logout" type="primary" >
-            <i class="el-icon-info"></i>
-            &#12288;登录
-          </el-button>
-        </router-link>
       </el-aside>
       <!--Main-->
       <el-main>
@@ -46,11 +40,10 @@
 
 <script>
   export default {
-    name: 'layout',
+    name    : 'layout',
     data() {
       return {
         collapseNav: false,
-        logged: false
       }
     },
     computed: {},
@@ -58,9 +51,9 @@
 
     },
     mounted() {
-      this.logged = sessionStorage.sessionID
+      if (!sessionStorage.sessionID) this.$router.push('/login')
     },
-    methods: {
+    methods : {
       logout() {
         this.$router.push('/login');
         this.$message.success('退出成功');

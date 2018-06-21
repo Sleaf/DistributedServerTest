@@ -3,7 +3,7 @@
     <el-card class="box-card">
       <el-form class="loginFrom" :model="loginFrom" status-icon :rules="loginFromRule" ref="loginFrom">
         <div class="center">
-          <div style="font-weight: bold;text-align: center;font-size: 1.5em">登录NTM航空</div>
+          <div style="font-weight: bold;text-align: center;font-size: 1.5em">登录NTM波音</div>
         </div>
         <el-form-item label="用户名" prop="username">
           <el-input type="text" v-model="loginFrom.username" placeholder="用户名..."></el-input>
@@ -66,7 +66,7 @@
               spinner: 'el-icon-loading',
               background: 'rgba(0, 0, 0, 0.7)'
             });
-            this.$.ajax.post(`/api/login`, JSON.stringify({
+            this.$.ajax.post(`http://localhost:3001/login`, JSON.stringify({
               username: this.loginFrom.username,
               password: this.loginFrom.password
             })).then((res) => {

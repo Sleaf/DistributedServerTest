@@ -2,26 +2,27 @@ const databasePool = require('../store/database');
 
 async function getFlightsInfo(ctx) {
   const reqDate = ctx.request.query.date;
-  //bad request
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(reqDate)) return ctx.throw(400);
   //find in database
-  const sqlStr = 'SELECT * FROM flights WHERE tripDate = ?';
+  let sqlStr = 'SELECT * FROM flights';
+  if (/^\d{4}-\d{2}-\d{2}$/.test(reqDate)) {
+    sqlStr += ' WHERE tripDate = ?'
+  }
   const sqlParams = [reqDate];
   await new Promise((resolve, reject) => {
     databasePool.query(sqlStr, sqlParams, (error, results) => {
       if (error) {
         console.error(error);
         ctx.body = {
-          code: 508,
+          code  : 508,
           status: 'FAIL',
-          msg: error.message
+          msg   : error.message
         };
       } else {
         //send back
         ctx.body = {
-          code: 200,
+          code  : 200,
           status: 'OK',
-          data: JSON.stringify(results)
+          data  : results
         };
       }
       return resolve()
@@ -31,7 +32,7 @@ async function getFlightsInfo(ctx) {
 
 async function addInfo(ctx) {
   const payload = ctx.request.body;
-  const sqlStr = 'INSERT INTO flights VALUES(?,?,?,?,?,?,?)';
+  const sqlStr = 'INSERT INTO flights (tripDate,tripTime,model,departure,terminal,price,restTickets) VALUES(?,?,?,?,?,?,?)';
   const sqlParams = [
     payload.tripDate || ctx.throw(400),
     payload.tripTime || ctx.throw(400),
@@ -46,16 +47,16 @@ async function addInfo(ctx) {
       if (error) {
         console.error(error);
         ctx.body = {
-          code: 508,
+          code  : 508,
           status: 'FAIL',
-          msg: error.message
+          msg   : error.message
         };
       } else {
         //send back
         ctx.body = {
-          code: 200,
+          code  : 200,
           status: 'OK',
-          data: JSON.stringify(results)
+          data  : null
         };
       }
       return resolve()

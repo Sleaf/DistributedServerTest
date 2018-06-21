@@ -20,31 +20,34 @@ MQProducer.on('error', function (err) {
 async function takeOrders(ctx) {
   const payload = ctx.request.body;
   //find rest of seats in cache
-  let flight_info = await redis.hget(`flight_${payload.flight_id}_info`, 'restTickets');
-  if (flight_info && flight_info.restTickets > 0) {
-    const sqlStr = 'INSERT INTO orders VALUES (?,?,?,?,?,?,?)';
-    const order_id = `${Date.now()}_${payload.user_id}`;
+  let flight_restTickets = await redis.hget(`flights_${payload.flight_id}_info`, 'restTickets');
+  console.log(payload.flight_id, '号航班剩余票数：', flight_restTickets);
+  if (Number(flight_restTickets) > 0) {
+    const sqlStr = 'INSERT INTO orders (order_id, user_id, flight_id, tripDate, price, bank_brand_id, bank_token, status, msg) VALUES (?,?,?,?,?,?,?,?,?)';
     const user_id = ctx.session.views.user_id;
+    const order_id = `${Date.now()}_${user_id}`;
     const flight_id = payload.flight_id;
     const tripDate = payload.date;
     const price = payload.price;
+    const bank_brand_id = null;
     const bank_token = null;
     const status = 'RESERVED';
     const msg = '';
-    const sqlParams = [order_id, user_id, flight_id, tripDate, price, bank_token, status, msg];
+    const sqlParams = [order_id, user_id, flight_id, tripDate, price, bank_brand_id, bank_token, status, msg];
     return new Promise((resolve, reject) => {
       databasePool.query(sqlStr, sqlParams, (error, results) => {
         if (error) {
+          console.error(error);
           resolve(ctx.body = {
-            code: 508,
+            code  : 508,
             status: 'FAIL',
-            msg: e.msg
+            msg   : '数据库内部错误：' + error.msg
           })
         } else {
-          resolve({
-            code: 200,
+          resolve(ctx.body = {
+            code  : 200,
             status: 'OK',
-            data: {
+            data  : {
               order_id
             }
           });
@@ -53,9 +56,9 @@ async function takeOrders(ctx) {
     });
   } else {
     return ctx.body = {
-      code: flight_info === 0 ? 408 : 404,
+      code  : flight_restTickets === 0 ? 408 : 404,
       status: 'FAIL',
-      msg: flight_info === 0 ? 'tickets sold out' : 'flight not exist'
+      msg   : flight_restTickets === 0 ? 'tickets sold out' : 'flight not exist'
     }
   }
 }
@@ -63,17 +66,17 @@ async function takeOrders(ctx) {
 async function payOrder(ctx) {
   const payload = ctx.request.body;
   const sendMsg = JSON.stringify({
-    order_id: payload.order_id,
+    order_id     : payload.order_id,
     bank_brand_id: payload.bank_brand_id,
-    bank_token: `${Date.now()}_${payload.user_id}`,
+    bank_token   : `${Date.now()}_${payload.user_id}`,
   });
   const sendPayload = {
-    topic: kafka.topic,
-    messages: sendMsg, // multi messages should be a array, single message can be just a string or a KeyedMessage instance
-    key: 'theKey', // string or buffer, only needed when using keyed partitioner
-    partition: 0, // default 0
+    topic     : kafka.topic,
+    messages  : sendMsg, // multi messages should be a array, single message can be just a string or a KeyedMessage instance
+    key       : 'theKey', // string or buffer, only needed when using keyed partitioner
+    partition : 0, // default 0
     attributes: 2, // default: 0
-    timestamp: Date.now() // <-- defaults to Date.now() (only available with kafka v0.10 and KafkaClient only)
+    timestamp : Date.now() // <-- defaults to Date.now() (only available with kafka v0.10 and KafkaClient only)
   };
   MQProducer.send(sendPayload, (err, data) => {
     //todo 检查付款状态
@@ -89,24 +92,25 @@ async function payOrder(ctx) {
 
 /*查看订单*/
 async function checkOrders(ctx) {
-  const sqlStr = 'SELECT * FORM orders WHERE user_id = ?';
+  const sqlStr = 'SELECT DISTINCT * FROM orders,flights WHERE orders.user_id = ? AND orders.flight_id = flights.flight_id';
   const user_id = ctx.session.views.user_id;
+  // console.log('查询用户订单：', user_id);
+  if (!user_id) return ctx.throw(403);
   const sqlParams = [user_id];
   return new Promise((resolve, reject) => {
     databasePool.query(sqlStr, sqlParams, (error, results) => {
       if (error) {
+        console.log(error);
         resolve(ctx.body = {
-          code: 508,
+          code  : 508,
           status: 'FAIL',
-          msg: e.msg
+          msg   : '数据库内部错误：' + error.msg
         })
       } else {
-        resolve({
-          code: 200,
+        resolve(ctx.body = {
+          code  : 200,
           status: 'OK',
-          data: {
-            orders: results
-          }
+          data  : results
         });
       }
     });

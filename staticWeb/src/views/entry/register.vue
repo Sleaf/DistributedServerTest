@@ -85,7 +85,7 @@
               spinner: 'el-icon-loading',
               background: 'rgba(0, 0, 0, 0.7)'
             });
-            this.$.ajax.post('/api/register', {
+            this.$.ajax.post('http://localhost:3000/register', {
               username: this.registerFrom.username,
               password: this.registerFrom.password
             }).then((res) => {

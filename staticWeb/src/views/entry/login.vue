@@ -66,7 +66,7 @@
               spinner   : 'el-icon-loading',
               background: 'rgba(0, 0, 0, 0.7)'
             });
-            this.$.ajax.post(`/api/login`, JSON.stringify({
+            this.$.ajax.post(`http://localhost:3000/login`, JSON.stringify({
               username: this.loginFrom.username,
               password: this.loginFrom.password
             })).then((res) => {
