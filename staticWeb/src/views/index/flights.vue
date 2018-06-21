@@ -27,17 +27,17 @@
 
 <script>
   export default {
-    name: "detail",
+    name   : "detail",
     data() {
       return {
-        pickedDate: new Date(),
+        pickedDate   : new Date(),
         pickerOptions: {
           disabledDate(time) {
             return time.getTime() < Date.now() - 24 * 3600 * 1000
               && time.getTime() > Date.now() + 30 * 24 * 3600 * 1000;
           },
         },
-        flights: [
+        flights      : [
           // {
           //   "flight_id": '123',
           //   "tripTime": '123123',
@@ -52,13 +52,14 @@
     methods: {
       updateFlights() {
         const loading = this.$loading({
-          lock: true,
-          text: '更新中...',
-          spinner: 'el-icon-loading',
+          lock      : true,
+          text      : '更新中...',
+          spinner   : 'el-icon-loading',
           background: 'rgba(0, 0, 0, 0.7)'
         });
         this.$.ajax.get(`/api/scan?date=${this.pickedDate.format('YYYY-MM-DD')}`).then((res) => {
           console.log(res);
+          //todo 更新列表
         }, (err) => {
           this.$message.error('获取失败：' + err.msg);
         }).finally(e => {
@@ -66,7 +67,29 @@
         })
       },
       bookTicket(index, row) {
-
+        if (sessionStorage.sessionID === undefined) {
+          this.$message.warning('请先登录');
+          this.$router.push('/login');
+          return;
+        }
+        const loading = this.$loading({
+          lock      : true,
+          text      : '更新中...',
+          spinner   : 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)'
+        });
+        this.$.ajax.post(`/api/order`, JSON.stringify({
+          flight_id: row.flight_id,
+          user_id  : sessionStorage.user_id,
+          date     : this.pickedDate.format('YYYY-MM-DD'),
+          price    : row.price,
+        })).then((res) => {
+          this.flights = res;
+        }, (err) => {
+          this.$message.error('获取失败：' + err.msg);
+        }).finally(e => {
+          loading.close();
+        })
       }
     },
     mounted() {

@@ -25,10 +25,10 @@
 
 <script>
   export default {
-    name: "login",
+    name   : "login",
     data() {
       return {
-        loginFrom: {
+        loginFrom    : {
           username: '',
           password: '',
         },
@@ -41,7 +41,7 @@
                 callback();
               }
             },
-            trigger: 'blur'
+            trigger  : 'blur'
           }],
           password: [{
             validator: (rule, value, callback) => {
@@ -51,7 +51,7 @@
                 callback();
               }
             },
-            trigger: 'blur'
+            trigger  : 'blur'
           }],
         }
       };
@@ -61,9 +61,9 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             const loading = this.$loading({
-              lock: true,
-              text: '登录中...',
-              spinner: 'el-icon-loading',
+              lock      : true,
+              text      : '登录中...',
+              spinner   : 'el-icon-loading',
               background: 'rgba(0, 0, 0, 0.7)'
             });
             this.$.ajax.post(`/api/login`, JSON.stringify({
@@ -71,7 +71,8 @@
               password: this.loginFrom.password
             })).then((res) => {
               this.$message.success('登录成功');
-              sessionStorage.sessionID = res
+              sessionStorage.user_id = res.user_id;
+              sessionStorage.sessionID = res.sessionID;
               this.$router.push('/');
             }, (err) => {
               this.$message.error('登录失败：' + err.msg)

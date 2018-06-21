@@ -40,17 +40,17 @@
 
 <script>
   export default {
-    name: "detail",
+    name   : "detail",
     data() {
       return {
-        pickedDate: new Date(),
+        pickedDate   : new Date(),
         pickerOptions: {
           disabledDate(time) {
             return time.getTime() < Date.now() - 24 * 3600 * 1000
               && time.getTime() > Date.now() + 30 * 24 * 3600 * 1000;
           },
         },
-        flights: [
+        flights      : [
           // {
           //   "flight_id": '123',
           //   "tripTime": '123123',
@@ -60,25 +60,25 @@
           //   "restTickets": 20
           // }
         ],
-        newFlight: {
+        newFlight    : {
           tripDateTime: '',
-          model: '',
-          departure: '',
-          terminal: '',
-          price: '',
-          restTickets: ''
+          model       : '',
+          departure   : '',
+          terminal    : '',
+          price       : '',
+          restTickets : ''
         }
       }
     },
     methods: {
       updateFlights() {
         const loading = this.$loading({
-          lock: true,
-          text: '更新中...',
-          spinner: 'el-icon-loading',
+          lock      : true,
+          text      : '更新中...',
+          spinner   : 'el-icon-loading',
           background: 'rgba(0, 0, 0, 0.7)'
         });
-        this.$.ajax.get(`/api/scan?date=${this.pickedDate.format('YYYY-MM-DD')}`).then((res) => {
+        this.$.ajax.get(`/flight/info?date=${this.pickedDate.format('YYYY-MM-DD')}`).then((res) => {
           console.log(res);
         }, (err) => {
           this.$message.error('获取失败：' + err.msg);
@@ -90,9 +90,9 @@
         const payload = this.newFlight;
         payload.tripDate = new Date(payload.tripDateTime).toLocaleDateString();
         payload.tripTime = new Date(payload.tripDateTime).toLocaleTimeString();
-        this.$.ajax.post('/flight', JSON.stringify(payload)).then(res=>{
+        this.$.ajax.post('/flight/info', JSON.stringify(payload)).then(res => {
           this.$message.success('添加成功');
-        },e=>{
+        }, e => {
           this.$message.error('添加失败');
         })
       }
@@ -118,5 +118,5 @@
   .newInputFrom
     margin 2em 0 0 0
     .newInput
-      width 16%
+      width 14%
 </style>

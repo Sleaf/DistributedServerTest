@@ -19,12 +19,12 @@
                 所有航班
               </el-menu-item>
             </router-link>
-            <router-link to="orders">
+            <router-link to="orders" v-if="logged">
               <el-menu-item index="orders">
                 我的订单
               </el-menu-item>
             </router-link>
-            <router-link to="BankOrders">
+            <router-link to="BankOrders" v-if="logged">
               <el-menu-item index="BankOrders">
                 我的银行账单
               </el-menu-item>
@@ -36,7 +36,7 @@
           &#12288;退出登录
         </el-button>
         <router-link to="/login" v-else>
-          <el-button class="btn_logout" type="primary" >
+          <el-button class="btn_logout" type="primary">
             <i class="el-icon-info"></i>
             &#12288;登录
           </el-button>
@@ -56,11 +56,11 @@
 
 <script>
   export default {
-    name: 'layout',
+    name    : 'layout',
     data() {
       return {
         collapseNav: false,
-        logged: false
+        logged     : false
       }
     },
     computed: {},
@@ -70,7 +70,7 @@
     mounted() {
       this.logged = sessionStorage.sessionID
     },
-    methods: {
+    methods : {
       logout() {
         this.$router.push('/login');
         this.$message.success('退出成功');
